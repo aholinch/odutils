@@ -1,8 +1,98 @@
+<!DOCTYPE html>
 <html>
 <head>
+<!-- W3 CSS templates are amazing, check them out https://www.w3schools.com/w3css/default.asp -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>ODUtils</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+body {font-size:16px;}
+.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
+.w3-half img:hover{opacity:1}
+</style>
 </head>
 <body>
-<p>ODUtils page</p>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-theme w3-collapse w3-top w3-large w3-padding" style="z-index: 3; width: 300px; font-weight: bold; display: none;" id="mySidebar"><br>
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+  <div class="w3-container">
+    <h3 class="w3-padding-64"><b>ODUtils</b></h3>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#intro" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Introduction</a> 
+    <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Web Services</a> 
+    <a href="#links" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Links</a> 
+  </div>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-container w3-top w3-hide-large w3-theme w3-xlarge w3-padding">
+  <a href="javascript:void(0)" class="w3-button w3-theme w3-margin-right" onclick="w3_open()">☰</a>
+  <span>ODUtils</span>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer; display: none;" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:340px;margin-right:40px">
+
+  <!-- Header -->
+  <div class="w3-container" style="margin-top:80px" id="intro">
+    <h1 class="w3-jumbo"><b>ODUtils</b></h1>
+    <h1 class="w3-xxxlarge w3-text-theme"><b>Introduction</b></h1>
+    <hr style="width:100px;border:5px solid" class="w3-round w3-border-theme">
+    <p>ODUtils or odutils stands for Orbit Determination Utilities.  I have written a few simple routines to convert between Cartesian state vectors and two line element sets (TLEs).  TLEs are used with SGP4 and the new SGP4-XP propagators.  My utilities can convert position and velocity vectors into TLEs and do the reverse.  If you have a license for the SGP4-XP binaries published on Space-Track.org, you can also work with SGP4-XP TLEs.  I have also taken the time to implement a set of simple web services.</p>
+  </div>
+  
+  <!-- Web Services -->
+  <div class="w3-container" id="services" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-theme"><b>Web Services</b></h1>
+    <hr style="width:100px;border:5px solid" class="w3-round w3-border-theme">
+    <p>As of September 2021, the USSF only provides SGP4-XP in compiled binary form.  They do provide a set of wrappers in a few different software languages to call their libraries.  I prefer to work in Java and have developed some example web services to call these binaries.  Providing web services to access utility routines helps in two important ways.  The first is to grant flexibility with language implementation.  If your prefered language can make HTTP calls and parse JSON, you can integrate with web services written in any other language.  Even though it adds a web server to the architecture, this can often simplify the implementation process because there is no need to wrap the core binaries in your prefered language.  Also, because the SGP4-XP routines are currently available in binary only, it may require special security considerations.  Third-party binaries with no available source code may present a concern for operators wishing to include the functionality on their operational systems.  By having the code be accessed through web services, the binaries can be isolated on a single node on the network or wrapped in a VM or other container.  The outbound permissions on that node or container can be revoked giving some assurance that these binaries are only able to function through the web services interface.</p>
+  </div>
+  
+  <!-- Links -->
+  <div class="w3-container" id="links" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-theme"><b>Links</b></h1>
+    <hr style="width:100px;border:5px solid" class="w3-round w3-border-theme">
+    <ul>
+      <li>ODUtils - the github repository is <a href="https://github.com/aholinch/odutils" target="_blank">here</a></li>
+      <li>Orekit - the homepage is <a href="https://orekit.org/" target="_blank" >here</a></li>
+      <li>Space-Track.org - visit the <a href="https://www.space-track.org" target="_blank" >homepage</a> or get the <a href="https://www.space-track.org/documentation#/sgp4" target="_blank" >SGP4-XP software</a> if you already have an account.</li>
+    </ul> 
+  </div>
+
+<!-- End page content -->
+</div>
+
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+</script>
+
 </body>
 </html>
