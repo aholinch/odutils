@@ -27,6 +27,7 @@ body {font-size:16px;}
   <div class="w3-bar-block">
     <a href="#intro" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Introduction</a> 
     <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Web Services</a> 
+    <a href="#setup" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Setup</a> 
     <a href="#links" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Links</a> 
   </div>
 </nav>
@@ -56,6 +57,26 @@ body {font-size:16px;}
     <h1 class="w3-xxxlarge w3-text-theme"><b>Web Services</b></h1>
     <hr style="width:100px;border:5px solid" class="w3-round w3-border-theme">
     <p>As of September 2021, the USSF only provides SGP4-XP in compiled binary form.  They do provide a set of wrappers in a few different software languages to call their libraries.  I prefer to work in Java and have developed some example web services to call these binaries.  Providing web services to access utility routines helps in two important ways.  The first is to grant flexibility with language implementation.  If your prefered language can make HTTP calls and parse JSON, you can integrate with web services written in any other language.  Even though it adds a web server to the architecture, this can often simplify the implementation process because there is no need to wrap the core binaries in your prefered language.  Also, because the SGP4-XP routines are currently available in binary only, it may require special security considerations.  Third-party binaries with no available source code may present a concern for operators wishing to include the functionality on their operational systems.  By having the code be accessed through web services, the binaries can be isolated on a single node on the network or wrapped in a VM or other container.  The outbound permissions on that node or container can be revoked giving some assurance that these binaries are only able to function through the web services interface.</p>
+    <h2 class="w3-large w3-text-theme"><b>cart2tle</b></h2>
+    <p>This service will convert a Cartesian position and velocity vector into a TLE.  The vector is specified as x, y, and z position in km and x, y, and z velocity in km/s along with an epoch date.  The service will return 3 TLEs.  Each TLE is computed using the iteration method to gradually adjust a set of TLE components until the output vector at epoch matches the input.  The first TLE is computed using the open source version of <a href="https://github.com/aholinch/sgp4" target="_blank">SGP4</a> that I ported to java.  The second TLE is computed using the official USSF implementation of SGP4.  The third TLE is computed using the USSF implementation of the new SGP4-XP.  No drag or SRP coefficients are fit as part of this conversion.</p>
+    <h2 class="w3-large w3-text-theme"><b>tle2cart</b></h2>
+    <p>This service will output a set of Cartesian position and velocity vectors for a set of times.  The input inludes a TLE, start date, end date, and time step in seconds.  The service will compute the output vector at each step between the start and end dates inclusively.</p>
+    <h2 class="w3-large w3-text-theme"><b>sgp4od</b></h2>
+    <p>The caller specifies a set of Cartesian position and velocity vectors, along with a desired output epoch.  The service will perform an orbit determination to fit an SGP4 TLE to the provided vectors.  Because the differential correction service can take some time to complete, this service runs asynchronously.  Callers submit the OD job to sgp4od and receive a job id in return.  To check on results and receive the output TLE, callers use the job id as a parameter to call sgp4odres.</p>
+    <h2 class="w3-large w3-text-theme"><b>sgp4xpod</b></h2>
+    <p>This service works like sgp4od, except the target output is a TLE for use with SGP4-XP.  Call sgp4xpodres to get the results.</p>
+    <h2 class="w3-large w3-text-theme"><b>orekitod</b></h2>
+    <p>Coming soon, this service will fit a set of Cartesian vectors or a set of TLEs using OREKITs high-precision force model.</p>
+  </div>
+  
+  <!-- Setup -->
+  <div class="w3-container" id="setup" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-theme"><b>Setup</b></h1>
+    <hr style="width:100px;border:5px solid" class="w3-round w3-border-theme">
+    <p>The code is split into two repositories.  The main algorithms are in the <a href="" target="_blank">odutils</a> repo on github.  This allows other users to interact with the algorithms without any web dependencies.  The other repo is called <a href="" target="_blank">odutils-web</a> and includes an embedded HTTP server, the Java Lightweight HTTP Server available from <a href="https://www.freeutils.net/source/jlhttp/" target="_blank">here</a>.</p>
+    <p>The Orekit project is used to provide coordinate transformations between TEME, ECEF, and J2000 and for the high-precision orbit determinations.  Use of this project requires downloading a separate data repository from them.</p>
+    <p>Finally, if you wish to have the USSF version of SGP4 or SGP4-XP, you must download the binaries from space-track.org and place them in the appropriate directory.</p>
+    <p>More detailed instructions are provided in the github repository.</p>
   </div>
   
   <!-- Links -->
@@ -63,7 +84,8 @@ body {font-size:16px;}
     <h1 class="w3-xxxlarge w3-text-theme"><b>Links</b></h1>
     <hr style="width:100px;border:5px solid" class="w3-round w3-border-theme">
     <ul>
-      <li>ODUtils - the github repository is <a href="https://github.com/aholinch/odutils" target="_blank">here</a></li>
+      <li>odutils - the github repository is <a href="https://github.com/aholinch/odutils" target="_blank">here</a></li>
+      <li>odutils-web - the github repository is <a href="https://github.com/aholinch/odutils" target="_blank">here</a></li>
       <li>Orekit - the homepage is <a href="https://orekit.org/" target="_blank" >here</a></li>
       <li>Space-Track.org - visit the <a href="https://www.space-track.org" target="_blank" >homepage</a> or get the <a href="https://www.space-track.org/documentation#/sgp4" target="_blank" >SGP4-XP software</a> if you already have an account.</li>
     </ul> 
