@@ -1,0 +1,4 @@
+Download the data archive and extract it
+
+
+https://gitlab.orekit.org/orekit/orekit-data/-/archive/master/orekit-data-master.zip
