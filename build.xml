@@ -38,6 +38,7 @@ http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
 
   <target name="compile">
   	
+    <mkdir dir="${build.dir}"/>
     <mkdir dir="${classes.dir}"/>
   	<pathconvert property="classpathProp" refid="classpath"/>
 
