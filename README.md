@@ -9,3 +9,5 @@ This project uses Hipparchus for a least-squares solver used in the orbit determ
 # OREKIT
 This project uses OREKIT for coordinate transformations and for a high-precision, numeric propagator.
 
+# odutils-web
+The odutils-web project wrapps odutils in a set of simple web services.

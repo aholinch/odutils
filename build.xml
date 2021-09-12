@@ -38,11 +38,10 @@ http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
 
   <target name="compile">
   	
+    <mkdir dir="${classes.dir}"/>
   	<pathconvert property="classpathProp" refid="classpath"/>
 
-  	<echo>Classpath is ${classpathProp}</echo>
   	
-    <mkdir dir="${classes.dir}"/>
     <javac includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" target="1.8" source="1.8" debug="true" compiler="modern">
       <classpath refid="classpath"/>
     </javac>
