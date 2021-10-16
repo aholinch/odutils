@@ -31,6 +31,25 @@ http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
     <pathelement location="${test.build.dir}"/>
   </path>
 
+  <target name="checkdata">
+    <condition property="dir.exists">
+        <available file="orekit-data" type="dir" />
+    </condition>
+  </target>
+
+  <target name="getdata" depends="checkdata">
+    <antcall target="getdataImpl" />
+  </target>
+  <target name="getdataImpl" unless="dir.exists">
+    <get skipexisting="true" src="https://gitlab.orekit.org/orekit/orekit-data/-/archive/master/orekit-data-master.zip" dest="orekit-data.zip" verbose="on">
+      <header name="Accept" value="*/*" />
+      <header name="Accept-Encoding" value="gzip, deflate, br" />
+      <header name="Host" value="gitlab.orekit.org" />
+    </get>
+    <unzip src="orekit-data.zip" dest="./"/>
+    <move file="orekit-data-master" tofile="orekit-data" />
+  </target>
+
   <target name="clean">
     <delete dir="${build.dir}"/>
     <delete dir="doc"/>
