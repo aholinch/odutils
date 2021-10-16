@@ -1,7 +1,7 @@
 This directory contains the jna jars distributed with USSF SGP4 binaries.
 The DLL/so/dylib files for you platform should be downloaded from space-track.org and placed
 in a platform specific sub directory here.
-That directory needs to be added to the java.library.path and the LD_LIBRARY_PATH environament variable.
 
+That directory needs to be added to the java.library.path and the LD_LIBRARY_PATH environment variable.
 
 You need to have a copy of the SGP4_Open_License.txt in your working directory.
