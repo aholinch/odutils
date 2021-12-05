@@ -247,6 +247,7 @@ public class OrekitUtils
         List<CartesianState> out = new ArrayList<CartesianState>(size);
         for(int i=0; i<size; i++)
         {
+        	cart = carts.get(i);
 	        epoch = toAD(cart.getEpoch());
 	        teme2EME2000 = teme.getTransformTo(eme2000, epoch);
 	        
@@ -283,6 +284,7 @@ public class OrekitUtils
         List<CartesianState> out = new ArrayList<CartesianState>(size);
         for(int i=0; i<size; i++)
         {
+        	cart = carts.get(i);
 	        epoch = toAD(cart.getEpoch());
 	        EME20002teme = eme2000.getTransformTo(teme, epoch);
 	        

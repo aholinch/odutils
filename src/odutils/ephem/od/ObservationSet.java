@@ -29,11 +29,22 @@ import odutils.ephem.CartesianState;
  */
 public class ObservationSet 
 {
+	protected String cartsFrame;
     protected List<CartesianState> carts;
     
     public ObservationSet()
     {
     	
+    }
+    
+    public void setCartsFrame(String frame)
+    {
+    	cartsFrame = frame;
+    }
+    
+    public String getCartsFrame()
+    {
+    	return cartsFrame;
     }
     
     public void setCarts(List<CartesianState> list)
