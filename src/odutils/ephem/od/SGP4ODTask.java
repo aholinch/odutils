@@ -57,7 +57,7 @@ public class SGP4ODTask extends AbstractODTask
 			boolean isTEME = true;
 			
 			double da[] = new double[4];
-			List<CartesianState> carts = obsSet.getCarts();
+			List<CartesianState> carts = obsSet.getTEMECarts();
 			
 			if(epoch == null)
 			{
@@ -90,6 +90,83 @@ public class SGP4ODTask extends AbstractODTask
 				INITBTERMS = PREFERREDBTERMS;
 			}
 			
+			INITBTERMS = new double[] {0,
+					1.00E-09,
+					1.78E-09,
+					3.16E-09,
+					5.62E-09,
+					1.00E-08,
+					1.78E-08,
+					3.16E-08,
+					5.62E-08,
+					1.00E-07,
+					1.78E-07,
+					3.16E-07,
+					5.62E-07,
+					1.00E-06,
+					1.78E-06,
+					3.16E-06,
+					5.62E-06,
+					1.00E-05,
+					1.78E-05,
+					3.16E-05,
+					5.62E-05,
+					1.00E-04,
+					1.78E-04,
+					3.16E-04,
+					5.62E-04,
+					1.00E-03,
+					1.78E-03,
+					3.16E-03,
+					5.62E-03,
+					1.00E-02,
+					1.78E-02,
+					3.16E-02,
+					5.62E-02,
+					1.00E-01,
+					1.78E-01,
+					3.16E-01,
+					5.62E-01,
+					1.00E+00,
+					1.78E+00,
+					3.16E+00,
+					5.62E+00,
+					1.00E+01,
+					1.78E+01,
+					3.16E+01,
+					5.62E+01,
+					1.00E+02,
+					1.78E+02,
+					3.16E+02,
+					5.62E+02,
+					1.00E+03,
+					1.78E+03,
+					3.16E+03,
+					5.62E+03,
+					1.00E+04,
+					1.78E+04,
+					3.16E+04,
+					5.62E+04,
+					1.00E+05,
+					1.78E+05,
+					3.16E+05,
+					5.62E+05,
+					1.00E+06,
+					1.78E+06,
+					3.16E+06,
+					5.62E+06,
+					1.00E+07,
+					1.78E+07,
+					3.16E+07,
+					5.62E+07,
+					1.00E+08,
+					1.78E+08,
+					3.16E+08,
+					5.62E+08,
+					1.00E+09,
+					1.78E+09,
+					3.16E+09
+			};
 			boolean doLog = true;
 			
 			TLE tle = null;
@@ -126,7 +203,83 @@ public class SGP4ODTask extends AbstractODTask
 			orbit.numIters = this.iter;
 			
 			double del = 0;
-			
+			INITBTERMS = new double[] {0,
+					1.00E-09,
+					1.78E-09,
+					3.16E-09,
+					5.62E-09,
+					1.00E-08,
+					1.78E-08,
+					3.16E-08,
+					5.62E-08,
+					1.00E-07,
+					1.78E-07,
+					3.16E-07,
+					5.62E-07,
+					1.00E-06,
+					1.78E-06,
+					3.16E-06,
+					5.62E-06,
+					1.00E-05,
+					1.78E-05,
+					3.16E-05,
+					5.62E-05,
+					1.00E-04,
+					1.78E-04,
+					3.16E-04,
+					5.62E-04,
+					1.00E-03,
+					1.78E-03,
+					3.16E-03,
+					5.62E-03,
+					1.00E-02,
+					1.78E-02,
+					3.16E-02,
+					5.62E-02,
+					1.00E-01,
+					1.78E-01,
+					3.16E-01,
+					5.62E-01,
+					1.00E+00,
+					1.78E+00,
+					3.16E+00,
+					5.62E+00,
+					1.00E+01,
+					1.78E+01,
+					3.16E+01,
+					5.62E+01,
+					1.00E+02,
+					1.78E+02,
+					3.16E+02,
+					5.62E+02,
+					1.00E+03,
+					1.78E+03,
+					3.16E+03,
+					5.62E+03,
+					1.00E+04,
+					1.78E+04,
+					3.16E+04,
+					5.62E+04,
+					1.00E+05,
+					1.78E+05,
+					3.16E+05,
+					5.62E+05,
+					1.00E+06,
+					1.78E+06,
+					3.16E+06,
+					5.62E+06,
+					1.00E+07,
+					1.78E+07,
+					3.16E+07,
+					5.62E+07,
+					1.00E+08,
+					1.78E+08,
+					3.16E+08,
+					5.62E+08,
+					1.00E+09,
+					1.78E+09,
+					3.16E+09
+			};
 			// let's try to improve upon bstar fit
 			if(solveForBStar)
 			{
@@ -147,7 +300,7 @@ public class SGP4ODTask extends AbstractODTask
 					
 					
 					BTERMS=SGP4FitUtil.newTerms(tleOut.getBstar(),BTERMS,9, doLog);
-					
+					BTERMS[BTERMS.length-1]*=1.01;
 
 					if(i>1)doLog = false;
 					
@@ -178,6 +331,7 @@ public class SGP4ODTask extends AbstractODTask
 					this.rms=da[0];
 					orbit.rms=this.rms;
 					orbit.tle=tle;
+					minRMS = da[0];
 				}
 			}
 			
@@ -186,6 +340,8 @@ public class SGP4ODTask extends AbstractODTask
 		{
 			isRunning = false;
 		}
+		
+		System.err.println("MINRMS = " + this.rms);
 	}
 
 	protected TLE downsample(int maxCarts, Date epoch, TLE initTLE, List<CartesianState> carts, double useBTERMS[])

@@ -94,10 +94,32 @@ public class SGP4XPODTask extends AbstractODTask
 		isRunning= true;
 		try
 		{
+	
+			if(this.solveForAGOM && !this.solveForBTerm)
+			{
+				loopAGOMOnly();
+			}
+			else
+			{
+				loopBoth();
+			}
+		}
+		finally
+		{
+			isRunning = false;
+		}
+	}
+	
+	public void loopBoth() 
+	{
+		DateUtil.setDefaultTimeZone();
+		isRunning= true;
+		try
+		{
 			boolean isTEME = true;
 			
 			double da[] = new double[4];
-			List<CartesianState> carts = obsSet.getCarts();
+			List<CartesianState> carts = obsSet.getTEMECarts();
 			
 			if(epoch == null)
 			{
@@ -268,12 +290,232 @@ public class SGP4XPODTask extends AbstractODTask
 					this.rms = da[0];
 					orbit.rms = da[0];
 					orbit.tle = tle;
+					minRMS = da[0];
+
 				}
 				orbit.numIters = this.iter;
 				this.solvedState = orbit;
 				
 
 			}
+
+		}
+		finally
+		{
+			isRunning = false;
+		}
+	}
+	
+
+	public void loopAGOMOnly() 
+	{
+		DateUtil.setDefaultTimeZone();
+		isRunning= true;
+		try
+		{
+			boolean isTEME = true;
+			
+			double da[] = new double[4];
+			List<CartesianState> carts = obsSet.getTEMECarts();
+			
+			if(epoch == null)
+			{
+				epoch = carts.get(carts.size()-1).getEpoch();
+			}
+			
+			TLE initTLE = null;
+			if(initState == null)
+			{
+				int step = InitialOD.estimateBestStep(carts,15);
+				
+				CartesianState cart = InitialOD.gibbs(carts.get(0), carts.get(step), carts.get(2*step), EphemerisUtil.GM_Earth_km3);
+				
+				initTLE = CartToTLE.cartToXPTLE(cart, "99999");
+			}
+			else
+			{
+				initTLE = initState.tle;
+			}
+			
+			if(!initTLE.getEpoch().equals(epoch))
+			{
+				// shift epoch
+				initTLE = CartToTLE.shiftEpoch(initTLE, epoch);
+			}
+			
+			double INITAGOMS[] = SGP4FitUtil.WIDERANGE;
+			
+			if(PREFERREDAGOMS != null)
+			{
+				INITAGOMS = PREFERREDAGOMS;
+			}
+			boolean doLog = true;
+
+
+			TLE tle = null;
+
+			int bothBZero = 0;
+			int bothAZero = 0;
+
+			if(carts.size()>1000 && allowDownsample)
+			{
+				// downsample
+				initTLE = downsample(100,epoch,initTLE,carts,null,INITAGOMS);
+				INITAGOMS = SGP4FitUtil.simpleNewTerms(initTLE.getNDDot(), 15, 20.0);
+				doLog = false;
+				tle = initTLE;
+			}
+			else
+			{
+				tle = FitSGP4XP.fitSGP4XP(carts, isTEME, epoch, false, false, initTLE, da, true);
+			}
+
+			// yes downsample again!
+			if(carts.size()>100 && allowDownsample)
+			{
+				// downsample
+				initTLE = downsample(carts.size()/3,epoch,initTLE,carts,null,INITAGOMS);
+				INITAGOMS = SGP4FitUtil.simpleNewTerms(initTLE.getNDDot(), 15, 3.0);
+				doLog = false;
+				tle = initTLE;
+				
+				if(!validateTerms(INITAGOMS))
+				{
+					bothAZero++;
+				}
+
+			}
+
+			this.rms = da[0];
+			
+			OrbitState orbit = new OrbitState();
+			orbit.tle = tle;
+			orbit.rms = this.rms;
+			
+			this.solvedState = orbit;
+			
+			// let's try to improve upon bstar fit
+			
+				TLE tleOut = orbit.tle;
+				INITAGOMS = new double[] {0,
+						1.00E-09,
+						1.78E-09,
+						3.16E-09,
+						5.62E-09,
+						1.00E-08,
+						1.78E-08,
+						3.16E-08,
+						5.62E-08,
+						1.00E-07,
+						1.78E-07,
+						3.16E-07,
+						5.62E-07,
+						1.00E-06,
+						1.78E-06,
+						3.16E-06,
+						5.62E-06,
+						1.00E-05,
+						1.78E-05,
+						3.16E-05,
+						5.62E-05,
+						1.00E-04,
+						1.78E-04,
+						3.16E-04,
+						5.62E-04,
+						1.00E-03,
+						1.78E-03,
+						3.16E-03,
+						5.62E-03,
+						1.00E-02,
+						1.78E-02,
+						3.16E-02,
+						5.62E-02,
+						1.00E-01,
+						1.78E-01,
+						3.16E-01,
+						5.62E-01,
+						1.00E+00,
+						1.78E+00,
+						3.16E+00,
+						5.62E+00,
+						1.00E+01,
+						1.78E+01,
+						3.16E+01,
+						5.62E+01,
+						1.00E+02,
+						1.78E+02,
+						3.16E+02,
+						5.62E+02,
+						1.00E+03,
+						1.78E+03,
+						3.16E+03,
+						5.62E+03,
+						1.00E+04,
+						1.78E+04,
+						3.16E+04,
+						5.62E+04,
+						1.00E+05,
+						1.78E+05,
+						3.16E+05,
+						5.62E+05,
+						1.00E+06,
+						1.78E+06,
+						3.16E+06,
+						5.62E+06,
+						1.00E+07,
+						1.78E+07,
+						3.16E+07,
+						5.62E+07,
+						1.00E+08,
+						1.78E+08,
+						3.16E+08,
+						5.62E+08,
+						1.00E+09,
+						1.78E+09,
+						3.16E+09
+				};
+				double AGOMS[] = INITAGOMS;
+				double dda[] = new double[6];
+				double minRMS = Double.MAX_VALUE;
+				TLE tleMinRMS = null;
+				double del = 0;
+				double del2 = 0;
+				
+				
+
+						tleOut = SGP4FitUtil.minRMSForTerms(tleOut,carts,isTEME,false,AGOMS,true,dda);
+						if(dda[0]<minRMS)
+						{
+							minRMS = dda[0];
+							tleMinRMS = tleOut;
+							
+							this.rms = dda[0];
+							orbit.rms = dda[0];
+							orbit.tle = tleOut;
+						}
+							
+						AGOMS=SGP4FitUtil.newTerms(tleOut.getNDDot(),AGOMS,9, doLog);
+						tleOut = SGP4FitUtil.minRMSForTerms(tleOut,carts,isTEME,false,AGOMS,true,dda);
+						if(dda[0]<minRMS)
+						{
+							minRMS = dda[0];
+							tleMinRMS = tleOut;
+							
+							this.rms = dda[0];
+							orbit.rms = dda[0];
+							orbit.tle = tleOut;
+						}
+				tle = FitSGP4XP.fitSGP4XP(carts, isTEME, epoch, solveForBTerm, solveForAGOM, tleOut, da, true);
+				if(da[0]<minRMS)
+				{
+					this.rms = da[0];
+					orbit.rms = da[0];
+					orbit.tle = tle;
+					minRMS = da[0];
+				}
+				orbit.numIters = this.iter;
+				this.solvedState = orbit;
+
 
 		}
 		finally

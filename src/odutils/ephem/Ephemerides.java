@@ -17,13 +17,14 @@ limitations under the License.
 */
 package odutils.ephem;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import odutils.util.InterpUtil;
 
-public class Ephemerides 
+public class Ephemerides implements CartesianSource
 {
     public String id;
     public long t1 = 0;
@@ -43,10 +44,22 @@ public class Ephemerides
     public double vys[] = null;
     public double vzs[] = null;
     
+    protected String frame = null;
+    
     public Ephemerides(List<CartesianState> carts, String id)
     {
     	this.id = id;
     	buildArrays(carts);
+    }
+    
+    public void setFrame(String f)
+    {
+    	frame = f;
+    }
+    
+    public String getFrame()
+    {
+    	return frame;
     }
     
     protected void buildArrays(List<CartesianState> carts)
@@ -168,5 +181,65 @@ public class Ephemerides
     	
     	return vals;
     }
+
+    public boolean supportsUpdates()
+    {
+    	return false;
+    }
+    
+    public void setFromEquinoctal(double params[])
+    {
+    	// nothing to do
+    }
+    
+    
+    public void setFromVector(double params[])
+    {
+    	// nothing to do
+    }
+
+	@Override
+	public void setMeanAnomaly(double val) {
+		// nothing to do
+		
+	}
+
+	@Override
+	public List<CartesianState> getCartesians(Date d1, Date d2, double tStepSec)
+	{
+    	double dt = d2.getTime()-d1.getTime();
+    	dt = dt/(tStepSec*1000.0);
+    	
+    	int size = (int)(dt+1);
+    	
+    	List<CartesianState> carts = new ArrayList<CartesianState>(size);
+    	
+    	CartesianState cart = null;
+    	Date d = null;
+    	long t = 0;
+    	
+    	long tstep = (long)(1000.0d*tStepSec);
+    	
+    	long t2 = d2.getTime();
+    	t = d1.getTime();
+    	double rv[][] = null;
+    	
+   
+		while(t < t2)
+		{
+			d = new java.sql.Timestamp(t);
+			cart = getCartesian(d);
+			carts.add(cart);
+			
+			t+=tstep;
+		}
+		
+		// ensure last date is included regardless of steps
+		d = new java.sql.Timestamp(t2);
+		cart = getCartesian(d);
+		carts.add(cart);
+
+		return carts;
+	}
 
 }

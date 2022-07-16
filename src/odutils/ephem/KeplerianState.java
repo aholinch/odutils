@@ -80,6 +80,24 @@ public class KeplerianState
     	return kep;
     }
     
+    public void updateValsFromMeanMotion(double mmRevsPerDay)
+    {
+    	this.meanMotion = mmRevsPerDay;
+    	this.periodSec = 86400.0d/this.meanMotion;
+    	double tmp = EphemerisUtil.GM_Earth_km3/(4.0*Math.PI*Math.PI)*this.periodSec*this.periodSec;
+    	this.smaKM = Math.pow(tmp, 1.0/3.0);
+    	this.pKM=this.smaKM*(1.0-this.ecc*this.ecc);
+    }
+    
+    public void updateValsFromSma(double smaKm)
+    {
+    	this.smaKM = smaKm;
+    	this.pKM=this.smaKM*(1.0-this.ecc*this.ecc);
+    	double tmp = smaKm*smaKm*smaKm/(EphemerisUtil.GM_Earth_km3/(4.0*Math.PI*Math.PI));
+    	this.periodSec = Math.sqrt(tmp);
+    	this.meanMotion = 86400.0d/this.periodSec;
+    }
+    
     public static void setToTLE(KeplerianState kep, TLE tle)
     {
     	tle.setN(kep.meanMotion);

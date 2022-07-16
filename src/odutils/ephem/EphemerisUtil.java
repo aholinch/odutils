@@ -349,7 +349,9 @@ public class EphemerisUtil
     	double i = kep.incDeg;
     	
     	Om = Math.toRadians(Om);
+    	if(Om>999999)Om=0;
     	w = Math.toRadians(w);
+    	if(w>999999)w = 0;
     	M = Math.toRadians(M);
     	i = Math.toRadians(i);
     	
@@ -520,6 +522,9 @@ public class EphemerisUtil
     	double omega = Math.toRadians(kep.omegaDeg);
     	double argp = Math.toRadians(kep.argpDeg);
     	double m = Math.toRadians(kep.maDeg);
+    	
+    	if(argp>999999)argp=0;
+    	if(omega>999999)omega=0;
     	
     	omega += dt*dRaan;
     	omega = mod2pi(omega);
@@ -1706,10 +1711,10 @@ public class EphemerisUtil
     		count++;
     		if(count > 200) // give it a lot of iterations because we deal with some large eccentricity orbits
     		{
-    			System.err.println("Failed to solve kepler's equation");
-    			System.err.println(ecc + "\t"+Math.toDegrees(Mrad)+"\t"+Mrad +"\t"+E+"\t"+dE);
-    			System.err.flush();
-    			try {Thread.sleep(100);}catch(Exception ex) {};
+    			//System.err.println("Failed to solve kepler's equation");
+    			//System.err.println(ecc + "\t"+Math.toDegrees(Mrad)+"\t"+Mrad +"\t"+E+"\t"+dE);
+    			//System.err.flush();
+    			//try {Thread.sleep(10);}catch(Exception ex) {};
     			break;
     		}
     	}

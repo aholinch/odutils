@@ -172,6 +172,9 @@ public class SGP4FitUtil
 		TLE zeroTLE = null;
 		
 		double vals[][]=new double[bterms.length][2];
+		
+		double RMSVAL0 = 0;
+		
 		for(int i=0; i<bterms.length; i++)
 		{
 			MutableTLE mTLE = new MutableTLE(initTLE.getLine1(),initTLE.getLine2());
@@ -194,6 +197,10 @@ public class SGP4FitUtil
 				testTLE = FitSGP4.fitSGP4(carts, isTEME,testTLE.getEpoch(), false, testTLE,da, false);
 			}
 			rms = da[0];
+			if(i==0)
+			{
+				RMSVAL0=rms;
+			}
 			if(rms<minRMS)
 			{
 				tleOut = testTLE;
@@ -208,6 +215,20 @@ public class SGP4FitUtil
 				hasZero = true;
 				zeroRMS = rms;
 				zeroTLE = testTLE;
+			}
+			
+			if(i>3)
+			{
+				if(rms > 3*RMSVAL0)
+				{
+					// let's stop if we have big error
+					for(int j=i; j<vals.length; j++)
+					{
+						vals[j][0]=bterms[j];
+						vals[j][1]=rms;
+					}
+					break;
+				}
 			}
 		}
 		
@@ -228,6 +249,8 @@ public class SGP4FitUtil
 		}
 		da[0]=minRMS;
 		System.out.println("minRMS\t"+minRMS + "\t" + tleOut.getNDDot()+"\t"+tleOut.getBstar());
+		
+
 		//try{Thread.sleep(100000);}catch(Exception ex){};
 		return tleOut;
 	}

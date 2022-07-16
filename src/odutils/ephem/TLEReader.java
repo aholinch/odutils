@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,4 +128,29 @@ public class TLEReader
     	
     	return out;
     }
+
+	public static TLE closestToDate(List<TLE> tles, Date d1) 
+	{
+		if(tles == null || tles.size() == 0) return null;
+		
+		int size = tles.size();
+		double minDist = Double.MAX_VALUE;
+		long t = d1.getTime();
+		TLE tle = null;
+		TLE bestTLE = null;
+		double dist = 0;
+		
+		for(int i=0; i<size; i++)
+		{
+			tle = tles.get(i);
+			dist = Math.abs(tle.getEpoch().getTime()-t);
+			if(dist < minDist)
+			{
+				minDist = dist;
+				bestTLE = tle;
+			}
+		}
+		
+		return bestTLE;
+	}
 }

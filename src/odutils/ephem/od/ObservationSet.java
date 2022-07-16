@@ -18,8 +18,10 @@ limitations under the License.
 package odutils.ephem.od;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import odutils.ephem.CartesianState;
+import odutils.ephem.OrekitUtils;
 
 /**
  * This class should be expanded to support weights and other observation types.
@@ -55,5 +57,32 @@ public class ObservationSet
     public List<CartesianState> getCarts()
     {
     	return carts;
+    }
+    
+    public List<CartesianState> getTEMECarts()
+    {
+    	if(cartsFrame == null || cartsFrame.toLowerCase().equals("teme"))
+    	{
+    		return carts;
+    	}
+    	
+    	String frame = cartsFrame.toLowerCase();
+    	List<CartesianState> out = null;
+    	
+    	if(frame.equals("ecef") || frame.startsWith(""))
+    	{
+    		out = OrekitUtils.ecef2teme(carts);
+    	}
+    	else if(frame.equals("eme2000") || frame.equals("j2000"))
+    	{
+    		out = OrekitUtils.EME20002teme(carts);
+    	}
+    	else
+    	{
+    		Logger.getLogger(ObservationSet.class.getName()).warning("Unknown frame '" + cartsFrame + "'");
+    		out = carts;
+    	}
+    	
+    	return out;
     }
 }
