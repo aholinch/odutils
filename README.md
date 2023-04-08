@@ -9,6 +9,11 @@ To build the project you need Apache Ant 1.7.1 or later.  Simple type "ant" from
 You need to have the binaries from USSF.  If you have an account, you can download them from [Space-Track.org](https://www.space-track.org/documentation#/sgp4).  As of this writing the available file is Sgp4Prop_small_v8.1.zip.  Download the zip if you agree to the terms in the user agreement, and extract it somewhere on your system.  
 From the extracted folders copy the platform folder for your OS to the lib directory in this project.  For Windows, copy \<SGP4 Dir\>\Lib\Win64 to lib\ussfsgp4\Win64.  For Linux copy \<SGP4 Dir\>/Lib/Linux64 to lib/ussfsgp4/Linux64. 
 
+##New in v9
+USSF has included binaries for MacOS supporting Intel and M1.  I have gotten the Intel (IFORT) binaries to work on MacOS Big Sur.  The LD_LIBRARY_PATH must include the directory for the dylib files.  However some were compiled against "../../MACOS" so I had to add a softlink for that as well relative to the directory where I run.
+
+The JNA utilities for loading libraries changed so if you take the new afspc-9.0.jar you have to download the new binaries from space-track.org.  Otherwise the v8.1 jar should work with older binaries.
+
 # Hipparchus
 This project uses Hipparchus for a least-squares solver used in the orbit determination process.
 

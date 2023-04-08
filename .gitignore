@@ -27,8 +27,14 @@ build
 .project
 .settings
 
+.DS_Store
+lib/.DS_Store
+lib/GFORTRAN
+lib/MACOS
+
 
 orekit-data
 orekit-data-master
 orekit-data.zip
 orekit-data-master.zip
+SGP4_Open_License.txt
