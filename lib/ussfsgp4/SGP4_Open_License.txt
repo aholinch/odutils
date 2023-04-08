@@ -1,4 +1,4 @@
-AIR FORCE SPACE COMMAND (AFSPC) OPEN SOURCE AGREEMENT for
+SPACE OPERATIONS COMMAND (SpOC) OPEN SOURCE AGREEMENT for
 SGP4 - (Simplified General Perturbations #4)
 
 THIS OPEN SOURCE AGREEMENT ("AGREEMENT") DEFINES THE RIGHTS OF USE,
@@ -22,17 +22,16 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 
 The intended purpose of the SGP4 propagator is to properly propagate an
-object's Two Line Element Set (TLE) supplied by the USSTRATCOM'S Joint
-Functional Component Command for SPACE Joint Space Operations Center (JSpOC)
+object's Two Line Element Set (TLE) supplied by 18 Space Defense Squadron (18 SDS)
 such that the positions calculated for that object agree with those
-calculated by the JSpOC.  SGP4 propagator is to be used solely for the
-purpose of propagating JSpOC created TLEs.  TLEs created and supplied by the
-JSpOC are created in such a way as to be compatible with the SGP4
+calculated by 18 SDS.  SGP4 propagator is to be used solely for the
+purpose of propagating 18 SDS created TLEs.  TLEs created and supplied by the
+18 SDS are created in such a way as to be compatible with the SGP4
 propagator.  In this way, compatibility/interoperability issues between the
-JSpOC and the user of JSpOC SGP4 TLEs are addressed. Examples of what SGP4
-should not be used for, included but are not limited to, propagating JSpOC
+18 SDS and the user of 18 SDS SGP4 TLEs are addressed. Examples of what SGP4
+should not be used for, included but are not limited to, propagating 18 SDS
 created state vectors which come from any of the various other messages the
-JSpOC creates, such as Vector Covariance Messages, Orbital Conjunction
+18 SDS creates, such as Vector Covariance Messages, Orbital Conjunction
 Messages, Conjunction Data Messages, etc.
 
 
