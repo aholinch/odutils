@@ -41,7 +41,7 @@ http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
     <antcall target="getdataImpl" />
   </target>
   <target name="getdataImpl" unless="dir.exists">
-    <get skipexisting="true" src="https://gitlab.orekit.org/orekit/orekit-data/-/archive/master/orekit-data-master.zip" dest="orekit-data.zip" verbose="on">
+    <get skipexisting="true" src="https://gitlab.orekit.org/orekit/orekit-data/-/archive/main/orekit-data-master.zip" dest="orekit-data.zip" verbose="on">
       <header name="Accept" value="*/*" />
       <header name="Accept-Encoding" value="gzip, deflate, br" />
       <header name="Host" value="gitlab.orekit.org" />
