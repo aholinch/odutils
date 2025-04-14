@@ -1,5 +1,9 @@
 Download the data archive and extract it
 
+previously
 https://gitlab.orekit.org/orekit/orekit-data/-/archive/master/orekit-data-master.zip
+
+currently
+https://gitlab.orekit.org/orekit/orekit-data/-/archive/main/orekit-data-master.zip
 
 Or you can call "ant getdata" from the main directory.
